@@ -6,6 +6,10 @@ import './App.css'
 function App() {
   const [count, setCount] = useState(0)
 
+  const handleButtonClick = async () => {
+    const response = await fetch('/api')
+  }
+
   return (
     <>
       <div>
@@ -20,6 +24,9 @@ function App() {
       <div className="card">
         <button onClick={() => setCount((count) => count + 1)}>
           count is {count}
+        </button>
+        <button onClick={handleButtonClick}>
+          Test proxy
         </button>
         <p>
           Edit <code>src/App.tsx</code> and save to test HMR
