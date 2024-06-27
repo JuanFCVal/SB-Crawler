@@ -3,4 +3,5 @@ export interface INewsItem {
   title: string;
   points: number;
   comments: number;
+  count_words_title: number;
 }

@@ -1,6 +1,6 @@
 import { Controller, Get, UseInterceptors } from '@nestjs/common';
 import { ScrapperService } from './scrapper.service';
-import { ResponseInterceptor } from 'src/interceptors/response.interceptor';
+import { ResponseInterceptor } from '../../interceptors/response.interceptor';
 
 @Controller('scrapper')
 @UseInterceptors(ResponseInterceptor)
