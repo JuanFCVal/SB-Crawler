@@ -1,12 +1,15 @@
+import { INewsItem } from "../../types/news_types"
 import NewsCard from "../NewsCard/NewsCard"
 
-const NewsList = () => {
-    const news = [1, 2, 3, 4, 5, 6]
+interface INewsListProps {
+    news: INewsItem[]
+}
+const NewsList = ({ news }: INewsListProps) => {
     return (
         <div className="flex flex-wrap">
-            {news.map(() => (
+            {news?.map((newsItem) => (
                 <div className="w-full md:w-1/2 lg:w-1/3 p-2">
-                    <NewsCard />
+                    <NewsCard newsItem={newsItem} />
                 </div>
             ))}
         </div>
