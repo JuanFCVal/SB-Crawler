@@ -8,7 +8,7 @@ const Layout = ({ children }: ILayoutProps) => {
     return (
         <>
             <Navbar />
-            <div className="w-full p-10">
+            <div className="w-full p-6">
                 {children}
             </div>
         </>
