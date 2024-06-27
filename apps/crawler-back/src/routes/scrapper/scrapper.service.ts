@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import * as cheerio from 'cheerio';
+import { INewsItem } from 'src/types/news';
 import { sampleHtml } from 'utils/test';
 
 @Injectable()
@@ -9,7 +10,7 @@ export class ScrapperService {
     const newsElements = $('tr.athing');
     const detailElements = $('td.subtext');
 
-    const news = newsElements
+    const news: INewsItem[] = newsElements
       .map((index, element) => {
         return this.extractNewsData($, element, detailElements.eq(index));
       })
@@ -21,7 +22,7 @@ export class ScrapperService {
     $: cheerio.Root,
     newsElement: cheerio.Element,
     detailElement: cheerio.Cheerio,
-  ) {
+  ): INewsItem {
     const rank = this.extractRank($, newsElement);
     const title = this.extractTitle($, newsElement);
     const points: number = this.extractPoints($, detailElement);
