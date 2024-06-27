@@ -12,7 +12,7 @@ export const filters: IComboBoxItemWithFilter[] = [
     label: 'More than five words, order by comments',
     filter: (news: INewsItem[]) =>
       news
-        .filter((newsItem) => newsItem.comments > 5)
+        .filter((newsItem) => newsItem.count_words_title > 5)
         .sort((a, b) => b.comments - a.comments),
   },
   {
@@ -20,7 +20,7 @@ export const filters: IComboBoxItemWithFilter[] = [
     label: 'Less or equal than five words, order by points',
     filter: (news: INewsItem[]) =>
       news
-        .filter((newsItem) => newsItem.points <= 5)
+        .filter((newsItem) => newsItem.count_words_title <= 5)
         .sort((a, b) => b.points - a.points),
   },
 ]
