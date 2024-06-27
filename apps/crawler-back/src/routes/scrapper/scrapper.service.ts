@@ -6,9 +6,8 @@ import { sampleHtml } from '../../../utils/test_utils';
 @Injectable()
 export class ScrapperService {
   async getHackerNews() {
-    // const response = await fetch(process.env.NEWS_URL);
-    // const html = await response.text();
-    const $ = cheerio.load(sampleHtml);
+    const response = await fetch(process.env.NEWS_URL);
+    const $ = cheerio.load(await response.text());
     const newsElements = $('tr.athing');
     const detailElements = $('td.subtext');
 
@@ -35,7 +34,6 @@ export class ScrapperService {
 
   public countWords(value: string): number {
     const words = value.split(' ');
-    //remove elements that only contains special characters
     const wordsWithoutSpecialChars = words.filter((word) => {
       return word.match(/[a-zA-Z0-9]/);
     });
