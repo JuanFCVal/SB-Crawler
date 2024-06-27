@@ -17,7 +17,7 @@ function App() {
 
   return (
     <Layout>
-      <div className="w-full px-10 md:px-5 sm:px-2">
+      <div className="w-full px-10 md:px-5 sm:px-2 mt-20">
         <h1 className="text-3xl mb-4">Hacker news</h1>
         <NewsList news={newsElements || []} />
       </div>
