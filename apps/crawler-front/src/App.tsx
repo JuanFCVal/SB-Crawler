@@ -1,41 +1,27 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect, useState } from "react";
+import Layout from "./components/Layout/Layout"
+import { getNews } from "./services/news_service"
+import { INewsItem } from "./types/news_types";
+import NewsList from "./components/NewsList/Newslist";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [newsElements, setNewsElements] = useState<INewsItem[]>()
 
-  const handleButtonClick = async () => {
-    const response = await fetch('/api')
-  }
+  useEffect(() => {
+    const handleLoadNews = async () => {
+      const response = await getNews()
+      setNewsElements(response.news)
+    }
+    handleLoadNews()
+  }, [])
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <Layout>
+      <div className="w-full px-10 md:px-5 sm:px-2 mt-20">
+        <h1 className="text-3xl mb-4">Hacker news</h1>
+        <NewsList news={newsElements || []} />
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <button onClick={handleButtonClick}>
-          Test proxy
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    </Layout>
   )
 }
 
