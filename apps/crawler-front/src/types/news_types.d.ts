@@ -4,6 +4,7 @@ export interface IGetNewsResponse {
 }
 
 export interface INewsItem {
+  count_words_title: number
   rank: number
   title: string
   points: number
