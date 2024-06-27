@@ -1,12 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import * as cheerio from 'cheerio';
 import { INewsItem } from 'src/types/news';
-import { sampleHtml } from 'utils/test';
 
 @Injectable()
 export class ScrapperService {
   async getHackerNews() {
-    const $ = cheerio.load(sampleHtml);
+    const response = await fetch(process.env.NEWS_URL);
+    const html = await response.text();
+    const $ = cheerio.load(html);
     const newsElements = $('tr.athing');
     const detailElements = $('td.subtext');
 
