@@ -6,12 +6,12 @@ interface ILayoutProps {
 }
 const Layout = ({ children }: ILayoutProps) => {
     return (
-        <>
+        <div className="flex flex-col">
             <Navbar />
-            <div className="w-full p-6">
+            <div className="w-full mt-24">
                 {children}
             </div>
-        </>
+        </div>
     );
 }
 

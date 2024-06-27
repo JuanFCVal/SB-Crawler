@@ -6,8 +6,8 @@ import { sampleHtml } from '../../../utils/test_utils';
 @Injectable()
 export class ScrapperService {
   async getHackerNews() {
-    const response = await fetch(process.env.NEWS_URL);
-    const $ = cheerio.load(await response.text());
+    // const response = await fetch(process.env.NEWS_URL);
+    const $ = cheerio.load(sampleHtml);
     const newsElements = $('tr.athing');
     const detailElements = $('td.subtext');
 
