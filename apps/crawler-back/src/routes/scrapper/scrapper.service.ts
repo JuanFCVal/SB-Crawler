@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import * as cheerio from 'cheerio';
 import { INewsItem } from 'src/types/news';
+import { sampleHtml } from '../../../utils/test_utils';
 
 @Injectable()
 export class ScrapperService {
   async getHackerNews() {
     const response = await fetch(process.env.NEWS_URL);
-    const html = await response.text();
-    const $ = cheerio.load(html);
+    const $ = cheerio.load(await response.text());
     const newsElements = $('tr.athing');
     const detailElements = $('td.subtext');
 
@@ -28,8 +28,16 @@ export class ScrapperService {
     const title = this.extractTitle($, newsElement);
     const points: number = this.extractPoints($, detailElement);
     const comments = this.extractComments($, detailElement);
+    const count_words_title = this.countWords(title);
+    return { rank, title, points, comments, count_words_title };
+  }
 
-    return { rank, title, points, comments };
+  public countWords(value: string): number {
+    const words = value.split(' ');
+    const wordsWithoutSpecialChars = words.filter((word) => {
+      return word.match(/[a-zA-Z0-9]/);
+    });
+    return wordsWithoutSpecialChars.length;
   }
 
   private extractRank($: cheerio.Root, element: cheerio.Element): number {
