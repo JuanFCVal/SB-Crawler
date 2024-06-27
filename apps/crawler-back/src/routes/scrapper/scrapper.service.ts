@@ -14,7 +14,7 @@ export class ScrapperService {
         return this.extractNewsData($, element, detailElements.eq(index));
       })
       .get();
-    return news;
+    return { news };
   }
 
   private extractNewsData(
