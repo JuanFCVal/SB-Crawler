@@ -7,7 +7,7 @@ import { ScrapperModule } from './routes/scrapper/scrapper.module';
 @Module({
   imports: [
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '../..', 'crawler-front/dist'),
+      rootPath: join(__dirname, '../../..', 'crawler-front/dist'),
     }),
     ScrapperModule,
   ],
