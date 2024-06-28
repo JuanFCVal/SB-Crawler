@@ -6,7 +6,7 @@
   "scripts": {
     "test": "turbo run test",
     "dev": "dotenv -- turbo run dev",
-    "start": "node apps/crawler-back/dist/main.js",
+    "start": "node apps/crawler-back/dist/src/main.js",
     "build": "turbo build"
   },
   "workspaces": [
