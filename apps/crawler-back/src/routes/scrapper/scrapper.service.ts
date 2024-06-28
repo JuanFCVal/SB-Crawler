@@ -6,33 +6,35 @@ import { sampleHtml } from '../../../utils/test_utils';
 @Injectable()
 export class ScrapperService {
   async getHackerNews() {
-    // const response = await fetch(process.env.NEWS_URL);
-    const $ = cheerio.load(sampleHtml);
+    const response = await fetch(process.env.NEWS_URL);
+    const rawText = await response.text();
+    const $ = cheerio.load(rawText);
     const newsElements = $('tr.athing');
     const detailElements = $('td.subtext');
-
     const news: INewsItem[] = newsElements
       .map((index, element) => {
-        return this.extractNewsData($, element, detailElements.eq(index));
+        const elementLoaded = $(element);
+        const detailLoaded = $(detailElements.eq(index));
+        return this.extractNewsData($, elementLoaded, detailLoaded);
       })
       .get();
     return { news };
   }
 
-  private extractNewsData(
+  extractNewsData(
     $: cheerio.Root,
-    newsElement: cheerio.Element,
+    newsElement: cheerio.Cheerio,
     detailElement: cheerio.Cheerio,
   ): INewsItem {
-    const rank = this.extractRank($, newsElement);
-    const title = this.extractTitle($, newsElement);
-    const points: number = this.extractPoints($, detailElement);
-    const comments = this.extractComments($, detailElement);
+    const rank = this.extractRank(newsElement);
+    const title = this.extractTitle(newsElement);
+    const points: number = this.extractPoints(detailElement);
+    const comments = this.extractComments(detailElement);
     const count_words_title = this.countWords(title);
     return { rank, title, points, comments, count_words_title };
   }
 
-  public countWords(value: string): number {
+  countWords(value: string): number {
     const words = value.split(' ');
     const wordsWithoutSpecialChars = words.filter((word) => {
       return word.match(/[a-zA-Z0-9]/);
@@ -40,26 +42,35 @@ export class ScrapperService {
     return wordsWithoutSpecialChars.length;
   }
 
-  private extractRank($: cheerio.Root, element: cheerio.Element): number {
-    const rank = $(element).find('.rank').text();
-    return this.extractNumbersFromString(rank);
+  extractData<T>(
+    element: cheerio.Cheerio,
+    selector: string,
+    transform: (text: string) => T = (text) => text as T,
+  ): T {
+    const text = selector
+      ? element.find(selector).text().trim()
+      : element.text().trim();
+    return transform(text);
   }
 
-  private extractTitle($: cheerio.Root, element: cheerio.Element): string {
-    return $(element).find('.titleline > a').text().trim();
+  extractRank(element: cheerio.Cheerio): number {
+    return this.extractData(element, '.rank', this.extractNumbersFromString);
   }
 
-  private extractPoints($: cheerio.Root, element: cheerio.Cheerio): number {
-    const points = element.find('.score').text();
-    return this.extractNumbersFromString(points);
+  extractTitle(element: cheerio.Cheerio): string {
+    return this.extractData(element, '.titleline > a');
   }
 
-  private extractComments($: cheerio.Root, element: cheerio.Cheerio): number {
-    const commentsText = element
-      .find('span.subline > a:last-child')
-      .text()
-      .trim();
-    return this.extractNumbersFromString(commentsText);
+  extractPoints(element: cheerio.Cheerio): number {
+    return this.extractData(element, '.score', this.extractNumbersFromString);
+  }
+
+  extractComments(element: cheerio.Cheerio): number {
+    return this.extractData(
+      element,
+      'span.subline > a:last-child',
+      this.extractNumbersFromString,
+    );
   }
 
   private extractNumbersFromString(value: string) {
