@@ -7,7 +7,7 @@ import { Combobox } from "./components/ComboBox/ComboBox";
 import { IComboBoxItemWithFilter } from "./types/combo_box";
 import { filters } from "./constants/filters";
 
-function App() {
+const App = () => {
   const [newsElements, setNewsElements] = useState<INewsItem[]>()
   const [selectedFilter, setSelectedFilter] = useState<IComboBoxItemWithFilter>(filters[0])
 
