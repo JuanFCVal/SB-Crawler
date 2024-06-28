@@ -1,23 +1,13 @@
-# Stage 1: Build the frontend
-FROM node:14-alpine as build-frontend
+# Stage 1: Build the project
+FROM node:20.11.0-alpine as build-stage
 WORKDIR /app
-COPY ./apps/crawler-front ./apps/crawler-front
-WORKDIR /app/apps/crawler-front
+COPY . .
 RUN npm ci
 RUN npm run build
 
-# Stage 2: Build the backend
-FROM node:14-alpine as build-backend
+# Stage 2: Run the application
+FROM node:20.11.0-alpine
 WORKDIR /app
-COPY ./apps/crawler-back ./apps/crawler-back
-COPY --from=build-frontend /app/apps/crawler-front/dist ./apps/crawler-back/dist
-WORKDIR /app/apps/crawler-back
-RUN npm ci
-RUN npm run build
-
-# Stage 3: Run the application
-FROM node:14-alpine
-WORKDIR /app
-COPY --from=build-backend /app .
+COPY --from=build-stage /app .
 EXPOSE 3000
-CMD ["node", "apps/crawler-back/dist/main.js"]
+CMD ["npm", "run", "start"]
