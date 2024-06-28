@@ -249,6 +249,13 @@ describe('ScrapperService', () => {
         ],
       });
     });
+    it('should return an error if the request fails', async () => {
+      process.env.NEWS_URL = 'https://example.com/news';
+      fetchMock.mockReject(new Error('Failed to fetch hacker news'));
+      await expect(service.getHackerNews()).rejects.toThrow(
+        'Failed to fetch hacker news',
+      );
+    });
   });
 
   describe('extractNewsData', () => {
@@ -295,6 +302,9 @@ describe('ScrapperService', () => {
   });
 
   describe('countWords', () => {
+    it('should return 0 if sentence is not proviced', () => {
+      expect(service.countWords(undefined)).toBe(0);
+    });
     it('should return 3 if sentence is "The plan-execute pattern"', () => {
       const sentence = 'The plan-execute pattern';
       expect(service.countWords(sentence)).toBe(3);
@@ -323,6 +333,10 @@ describe('ScrapperService', () => {
   });
 
   describe('extractRank', () => {
+    it('should return 0 if element is undefined', () => {
+      const rank = service.extractRank(undefined);
+      expect(rank).toBe(0);
+    });
     it('should return the number as rank for each news element', () => {
       const $ = cheerio.load(sampleHtml);
       const newsElements = $('tr.athing');
@@ -343,6 +357,10 @@ describe('ScrapperService', () => {
   });
 
   describe('extractTitle', () => {
+    it('should return "" if element is undefined', () => {
+      const rank = service.extractTitle(undefined);
+      expect(rank).toBe('');
+    });
     it('should return the title for each news element', () => {
       const titles = [
         'The Forth Deck mini: a portable Forth computer with a discrete CPU',
@@ -375,6 +393,10 @@ describe('ScrapperService', () => {
   });
 
   describe('extractPoints', () => {
+    it('should return 0 if element is undefined', () => {
+      const rank = service.extractPoints(undefined);
+      expect(rank).toBe(0);
+    });
     it('should return the points for each news element', () => {
       const points = [49, 334, 30, 48, 185, 40, 63, 154, 127, 66];
       const $ = cheerio.load(sampleHtml);
@@ -394,6 +416,10 @@ describe('ScrapperService', () => {
   });
 
   describe('extractComments', () => {
+    it('should return 0 if element is undefined', () => {
+      const rank = service.extractComments(undefined);
+      expect(rank).toBe(0);
+    });
     it('should return the number of comments for each news element', () => {
       const comments = [3, 143, 7, 33, 20, 2, 36, 57, 55, 13];
       const $ = cheerio.load(sampleHtml);

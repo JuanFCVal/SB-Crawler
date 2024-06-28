@@ -1,12 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import * as cheerio from 'cheerio';
 import { INewsItem } from 'src/types/news';
-import { sampleHtml } from '../../../utils/test_utils';
 
 @Injectable()
 export class ScrapperService {
   async getHackerNews() {
     const response = await fetch(process.env.NEWS_URL);
+    if (!response.ok) {
+      throw new Error(`Failed to fetch hacker news`);
+    }
     const rawText = await response.text();
     const $ = cheerio.load(rawText);
     const newsElements = $('tr.athing');
@@ -35,6 +37,7 @@ export class ScrapperService {
   }
 
   countWords(value: string): number {
+    if (!value) return 0;
     const words = value.split(' ');
     const wordsWithoutSpecialChars = words.filter((word) => {
       return word.match(/[a-zA-Z0-9]/);
@@ -46,23 +49,33 @@ export class ScrapperService {
     element: cheerio.Cheerio,
     selector: string,
     transform: (text: string) => T = (text) => text as T,
+    defaultValue?: T,
   ): T {
-    const text = selector
-      ? element.find(selector).text().trim()
-      : element.text().trim();
-    return transform(text);
+    try {
+      const text = selector
+        ? element.find(selector).text().trim()
+        : element.text().trim();
+      return transform(text);
+    } catch {
+      return defaultValue;
+    }
   }
 
   extractRank(element: cheerio.Cheerio): number {
-    return this.extractData(element, '.rank', this.extractNumbersFromString);
+    return this.extractData(element, '.rank', this.extractNumbersFromString, 0);
   }
 
   extractTitle(element: cheerio.Cheerio): string {
-    return this.extractData(element, '.titleline > a');
+    return this.extractData(element, '.titleline > a', (text) => text, '');
   }
 
   extractPoints(element: cheerio.Cheerio): number {
-    return this.extractData(element, '.score', this.extractNumbersFromString);
+    return this.extractData(
+      element,
+      '.score',
+      this.extractNumbersFromString,
+      0,
+    );
   }
 
   extractComments(element: cheerio.Cheerio): number {
@@ -70,6 +83,7 @@ export class ScrapperService {
       element,
       'span.subline > a:last-child',
       this.extractNumbersFromString,
+      0,
     );
   }
 
