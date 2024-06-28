@@ -8,8 +8,8 @@ interface INewsListProps {
 const NewsList = ({ news, filter }: INewsListProps) => {
     return (
         <div className="flex flex-wrap">
-            {filter(news)?.map((newsItem) => (
-                <div className="w-full md:w-1/2 lg:w-1/3 p-2">
+            {filter(news)?.map((newsItem, index) => (
+                <div className="w-full md:w-1/2 lg:w-1/3 p-2" key={index}>
                     <NewsCard newsItem={newsItem} />
                 </div>
             ))}
