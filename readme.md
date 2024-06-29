@@ -4,16 +4,22 @@
 
 This project is a monorepo built with TurboRepo, featuring a frontend developed with React and a backend using NestJS. The primary functionality is to create a web crawler that extracts the first 30 entries from Hacker News and perform specific filtering operations on the extracted data.
 
-#### **Features**
+### Live Demo 🎇:100:
 
-- Web Crawler:
+You can test a live demo of the application [here](https://dolphin-app-weuwr.ondigitalocean.app/).
+
+If you just want to see the results of the web crawler, you can access the following [endpoint](https://dolphin-app-weuwr.ondigitalocean.app/api/scrapper).
+
+#### **Features** ✨
+
+- Web Crawler: :ant:
   - Extracts number, title, points, and number of comments from the first 30 entries on Hacker News.
-- Filtering Operations:
+- Filtering Operations: 💹
   - Titles with more than five words, ordered by the number of comments.
   - Titles with five or less words, ordered by points.
-- Web Interface:
+- Web Interface: 💄
   - Interact with the crawler and view results through a web browser.
-- Automated Testing:
+- Automated Testing: 🚒
   - Ensures the functionality and performance of the solution.
 
 #### **Tech Stack**
