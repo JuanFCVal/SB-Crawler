@@ -66,6 +66,13 @@ If you just want to see the results of the web crawler, you can access the follo
 ### Testing
 
 You can run the tests for both applications with the following command in the root or you can run them individually in each application folder:
+`npm run test`
+
+#### Coverage
+##### Frontend
+![image](https://github.com/JuanFCVal/SB-Crawler-Monorepo/assets/39884712/349e80a8-d12a-4327-b951-080b58f63325)
+##### Backend
+![image](https://github.com/JuanFCVal/SB-Crawler-Monorepo/assets/39884712/92cfd116-7c43-40ab-b6fa-bf9c194caa2a)
 
 ### Structure
 
