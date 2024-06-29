@@ -43,14 +43,19 @@ This project is a monorepo built with TurboRepo, featuring a frontend developed 
 1. Create an .env file based on .env.example
 2. Start both applications running in the root: `npm run dev`
 3. Access the application:
-   - Frontend: http://localhost:<frontend_port> //5173 By default
-   - Backend: http://localhost:<backend_port> //8080 By default
+   - Frontend: http://localhost:3000
+   - Backend: http://localhost:3000/api/scrapper
 
 #### Production mode
 
 1. Create an .env file based on .env.example
 2. Build the applications running in the root: `npm run build`
 3. Start the applications running in the root: `npm run start`
+
+#### Production mode with Docker
+
+1. Create an .env file based on .env.example
+2. run `docker-compose up --build`
 
 ### Testing
 
